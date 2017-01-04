@@ -58,6 +58,11 @@ $footer-text-height: 1.3888888em;
 $footer-height-total: $footer-text-height + $footer-flourish-margin-bottom + $footer-flourish-height;
 $footer-height-total-sm: $footer-text-height + $footer-flourish-margin-bottom + $footer-flourish-height-sm;
 
+@font-face {
+    font-family: 'Frank Ruehl CLM';
+    src: url(assets/FrankRuehlCLM-Medium.ttf);
+}
+
 * {
     @include box-sizing(border-box);
     margin: 0;
