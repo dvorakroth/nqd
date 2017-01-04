@@ -1,0 +1,8 @@
+<ul class="hebrew-text" *ngFor="let group of allNiqqudByGroups; let f = first" [class.has-flourish-above]="f">
+    <li class="hebrew-text-letterblock" *ngFor="let niqqud of group"
+         [class.is-selected]="selectedLetter.hasNiqqud(niqqud)"
+         (click)="selectedLetter.toggleNiqqud(niqqud)"
+         unselectable="on">
+        {{letterWithNiqqud(niqqud).representation}}
+    </li>
+</ul>

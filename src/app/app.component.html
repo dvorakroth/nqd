@@ -1,0 +1,15 @@
+<hash-binder [(ngModel)]="fullText"></hash-binder>
+
+<div id="initial-input">
+    <input [(ngModel)]="fullText">
+</div>
+
+<ul *ngIf="letters && letters.length" class="hebrew-text">
+    <li class="hebrew-text-letterblock" *ngFor="let letter of letters"
+        [class.is-selected]="selectedLetter == letter"
+        (click)="letterClicked(letter)">
+        {{letter.representation}}
+    </li>
+</ul>
+
+<niqqud-keyboard *ngIf="selectedLetter" [selectedLetter]="selectedLetter"></niqqud-keyboard>

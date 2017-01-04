@@ -1,0 +1,310 @@
+/* You can add global styles to this file, and also import other style files */
+
+@mixin box-sizing($sizing) {
+    -webkit-box-sizing: $sizing;
+    -moz-box-sizing: $sizing;
+    box-sizing: $sizing;
+}
+
+@mixin all-flexbox {
+    display: -webkit-box; /* OLD - iOS 6-, Safari 3.1-6 */
+    display: -moz-box; /* OLD - Firefox 19- (buggy but mostly works) */
+    display: -ms-flexbox; /* TWEENER - IE 10 */
+    display: -webkit-flex; /* NEW - Chrome */
+    display: flex; /* NEW, Spec - Opera 12.1, Firefox 20+ */
+}
+
+@mixin all-flex-align($align) {
+    -webkit-box-align: $align; /* OLD */
+    -moz-box-align: $align; /* OLD */
+    -ms-flex-align: $align; /* TWEENER */
+    -webkit-align-items: $align; /* NEW */
+    align-items: $align; /* NEW */
+}
+
+$darker-brown: #754c2d;
+$brown: #ab8e5e;
+$almost-white: #edeae8;
+$sand: #ffce5a;
+$beige: #e9dec3;
+
+$bg-color: $brown;
+$content-bg-color: $almost-white;
+
+$box-border-color: $darker-brown;
+$box-bg-color: $beige;
+$sel-bg-color: $brown;
+$hov-bg-color: $sand;
+
+/* omitted: $size-xs-min-width: 0px; */
+$size-sm-min-width: 568px;
+$size-md-min-width: 768px;
+$size-lg-min-width: 1024px;
+$size-xl-min-width: 1280px;
+
+$font-stack: 'Frank Ruehl CLM', 'Frank Ruehl', 'Times New Roman', serif;
+
+$logo-font-size: 2em;
+$logo-line-height: 1.15;
+$logo-height: $logo-font-size * $logo-line-height;
+$logo-height-total: $logo-height + (0.5em + 1em) * 2;
+
+$footer-flourish-height: 1em;
+$footer-flourish-height-sm: 0.88888888em;
+$footer-flourish-margin-bottom: 1em;
+$footer-line-height: 1.3888888;
+$footer-text-height: 1.3888888em;
+
+$footer-height-total: $footer-text-height + $footer-flourish-margin-bottom + $footer-flourish-height;
+$footer-height-total-sm: $footer-text-height + $footer-flourish-margin-bottom + $footer-flourish-height-sm;
+
+* {
+    @include box-sizing(border-box);
+    margin: 0;
+}
+
+html {
+    height: 100%;
+}
+
+body {
+    @include all-flexbox;
+    display: flex; // so that the container will always stretch to the bottom
+    min-height: 100%;
+
+    text-align: center;
+    font-family: $font-stack;
+    font-size: 1.5em;
+
+    background-color: $bg-color;
+    padding: 0.5em;
+
+    @media screen and (min-width: $size-sm-min-width) {
+        font-size: 2.25em;
+        padding: 1em;
+    }
+}
+
+#main-content {
+    position: relative;
+    width: 100%;
+
+    background-color: $content-bg-color;
+    padding: 0.5em 0.5em $footer-height-total+0.5em 0.5em;
+
+    @media screen and (min-width: $size-sm-min-width) {
+        padding: 1em 1em $footer-height-total-sm+1em 1em;
+    }
+
+    @media screen and (min-width: $size-xl-min-width) {
+        width: 80%;
+        margin: 0 auto;
+    }
+}
+
+@mixin flourish($flourish-name) {
+    content: " ";
+
+    display: block;
+    width: 100%;
+    height: $footer-flourish-height;
+
+    margin: 0 auto 1em auto;
+
+    background: $flourish-name no-repeat center;
+
+    @media screen and (min-width: $size-sm-min-width) {
+        height: $footer-flourish-height-sm;
+    }
+}
+
+#page-footer {
+    position: absolute;
+    left: 0;
+    bottom: 0.5em;
+
+    display: block;
+    width: 100%;
+
+    line-height: $footer-line-height;
+
+    @media screen and (min-width: $size-sm-min-width) {
+        bottom: 1em;
+    }
+
+    ::before {
+        @include flourish(url(assets/flourish-1.svg));
+    }
+
+    > p {
+        white-space: nowrap;
+        overflow: visible;
+    }
+}
+
+#logo {
+    @mixin logo-flourish {
+        display: inline-block;
+        width: .44444444em;
+        height: 1.25em;
+
+        position: absolute;
+
+        content: " ";
+        background: url(assets/leaves-right.svg) no-repeat;
+    }
+
+    position: relative;
+
+    margin-top: 0.5em;
+    margin-bottom: 1em;
+
+    font-weight: normal;
+    font-size: $logo-font-size;
+    line-height: $logo-line-height;
+
+    white-space: nowrap;
+    overflow: hidden;
+
+    > span::before {
+        @include logo-flourish;
+        margin-right: -.44444444em;
+    }
+
+    > span::after {
+        @include logo-flourish;
+
+        /* mirror on the x axis */
+        -moz-transform: scaleX(-1); /* Gecko */
+        -o-transform: scaleX(-1); /* Opera */
+        -webkit-transform: scaleX(-1); /* Webkit */
+        transform: scaleX(-1); /* Standard */
+        filter: FlipH; /* IE 6/7/8 */
+    }
+}
+
+#loading-container {
+    @include all-flexbox;
+    @include all-flex-align(center);
+
+    width: 100%;
+    height: -webkit-calc(100% - #{$logo-height-total});
+    height: -moz-calc(100% - #{$logo-height-total});
+    height: calc(100% - #{$logo-height-total});
+
+    padding-bottom: 2em;
+}
+
+#initial-input > input {
+    padding: .3em .4em;
+    display: block;
+    width: 100%;
+
+    margin-bottom: 1em;
+
+    border: 1px solid #ccc;
+    box-shadow: inset 0 1px 3px #ddd;
+    border-radius: 4px;
+    box-sizing: border-box;
+
+    vertical-align: middle;
+
+    font-family: $font-stack;
+    font-size: 1.25em;
+    text-align: center;
+
+    @media screen and (min-width: $size-sm-min-width) {
+        font-size: 1em;
+    }
+}
+
+ul.hebrew-text {
+    list-style-type: none;
+}
+
+.hebrew-text {
+    padding: 0;
+    margin: 0 0 1em 0;
+}
+
+.hebrew-text-letterblock {
+    @include box-sizing(content-box);
+
+    display: inline-block;
+
+    width: 1.333333em; //3rem;
+    height: 1.333333em; //3rem;
+
+    margin-left: 5px;
+    margin-bottom: 5px;
+
+    border: 2px solid $box-border-color;
+
+    background-color: $box-bg-color;
+
+    font-size: 1.333333em;
+    text-align: center;
+    line-height: 1.333333em;
+    vertical-align: middle;
+
+    -webkit-user-select: none; /* Chrome/Safari */
+    -moz-user-select: none; /* Firefox */
+    -ms-user-select: none; /* IE10+ */
+    user-select: none;
+
+    cursor: pointer;
+
+    @media screen and (min-width: $size-sm-min-width) {
+        font-size: 1em;
+    }
+}
+
+.hebrew-text-letterblock.is-selected {
+    background-color: $sel-bg-color;
+    color: #fff;
+}
+
+.hebrew-text-letterblock:hover:not(.is-selected) {
+    background-color: $hov-bg-color;
+}
+
+.hebrew-text.has-flourish-above::before {
+    @include flourish(url(assets/flourish-3.svg));
+}
+
+.spinner {
+    width: 40px;
+    height: 40px;
+    background-color: #000;
+
+    margin: 0 auto;
+    -webkit-animation: sk-rotateplane 1.2s infinite ease-in-out;
+    animation: sk-rotateplane 1.2s infinite ease-in-out;
+}
+
+@-webkit-keyframes sk-rotateplane {
+    0% {
+        -webkit-transform: perspective(120px)
+    }
+    50% {
+        -webkit-transform: perspective(120px) rotateY(180deg)
+    }
+    100% {
+        -webkit-transform: perspective(120px) rotateY(180deg) rotateX(180deg)
+    }
+}
+
+@keyframes sk-rotateplane {
+    0% {
+        transform: perspective(120px) rotateX(0deg) rotateY(0deg);
+        -webkit-transform: perspective(120px) rotateX(0deg) rotateY(0deg)
+    }
+    50% {
+        transform: perspective(120px) rotateX(-180.1deg) rotateY(0deg);
+        -webkit-transform: perspective(120px) rotateX(-180.1deg) rotateY(0deg)
+    }
+    100% {
+        transform: perspective(120px) rotateX(-180deg) rotateY(-179.9deg);
+        -webkit-transform: perspective(120px) rotateX(-180deg) rotateY(-179.9deg);
+    }
+}
