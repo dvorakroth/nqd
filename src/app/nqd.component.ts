@@ -3,10 +3,10 @@ import {LetterInstance, parseHebrewText} from './hebrew-letter';
 import {environment} from '../environments/environment';
 
 @Component({
-    selector: 'app-root',
-    templateUrl: './app.component.html'
+    selector: 'nqd-root',
+    templateUrl: './nqd.component.html'
 })
-export class AppComponent {
+export class NqdComponent {
     letters: LetterInstance[] = [];
     selectedLetter: LetterInstance;
 

@@ -2,10 +2,10 @@ import {Component, EventEmitter, Output, OnDestroy} from '@angular/core';
 import {environment} from '../../environments/environment';
 
 @Component({
-    selector: 'hash-binder',
+    selector: 'nqd-hash-binder',
     template: ''
 })
-export class HashBinderComponent implements OnDestroy {
+export class NqdHashBinderComponent implements OnDestroy {
     @Output()
     hashChange: EventEmitter<string>;
 

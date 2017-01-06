@@ -1,6 +1,6 @@
 {
     "project": {
-        "version": "1.0.0",
+        "version": "1.0.1",
         "name": "niqqudizator"
     },
     "apps": [
@@ -16,7 +16,7 @@
             "main": "main.ts",
             "test": [],
             "tsconfig": "tsconfig.json",
-            "prefix": "app",
+            "prefix": "nqd",
             "mobile": false,
             "styles": [
                 "styles.scss"

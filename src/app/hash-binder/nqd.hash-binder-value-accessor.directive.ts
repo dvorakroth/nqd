@@ -1,24 +1,24 @@
 import {Directive, forwardRef} from '@angular/core';
 import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
-import {HashBinderComponent} from './hash-binder.component';
+import {NqdHashBinderComponent} from './nqd.hash-binder.component';
 
 const CUSTOM_VALUE_ACCESSOR = {
     provide: NG_VALUE_ACCESSOR,
-    useExisting: forwardRef(() => HashBinderValueAccessorDirective),
+    useExisting: forwardRef(() => NqdHashBinderValueAccessorDirective),
     multi: true
 };
 
 
 @Directive({
-    selector: 'hash-binder',
+    selector: 'nqd-hash-binder',
     host: {'(hashChange)': 'onChange($event)'},
     providers: [CUSTOM_VALUE_ACCESSOR]
 })
-export class HashBinderValueAccessorDirective implements ControlValueAccessor {
+export class NqdHashBinderValueAccessorDirective implements ControlValueAccessor {
     onChange = (_) => {};
     onTouched = () => {};
 
-    constructor(private host: HashBinderComponent) { }
+    constructor(private host: NqdHashBinderComponent) { }
 
     writeValue(value: any): void {
         this.host.setValue(value);

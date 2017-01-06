@@ -2,10 +2,10 @@ import {Component, Input, OnChanges, SimpleChanges} from '@angular/core';
 import {LetterInstance, Niqqud, NIQQUD_BY_GROUPS} from '../hebrew-letter';
 
 @Component({
-    selector: 'niqqud-keyboard',
-    templateUrl: './niqqud-keyboard.component.html'
+    selector: 'nqd-niqqud-keyboard',
+    templateUrl: './nqd.niqqud-keyboard.component.html'
 })
-export class NiqqudKeyboardComponent implements OnChanges {
+export class NqdNiqqudKeyboardComponent implements OnChanges {
     @Input()
     selectedLetter: LetterInstance;
 
