@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
-import {LetterInstance, parseHebrewText} from "./hebrew-letter";
-import {environment} from "../environments/environment";
+import {LetterInstance, parseHebrewText} from './hebrew-letter';
+import {environment} from '../environments/environment';
 
 @Component({
     selector: 'app-root',
@@ -17,7 +17,7 @@ export class AppComponent {
     }
 
     get fullText() {
-        return this.letters.reduce((x, y) => x + y.representation, "");
+        return this.letters.reduce((x, y) => x + y.representation, '');
     }
 
     set fullText(fullText: string) {
@@ -27,7 +27,7 @@ export class AppComponent {
     }
 
     letterClicked(letter: LetterInstance) {
-        if (this.selectedLetter == letter) {
+        if (this.selectedLetter === letter) {
             this.selectedLetter = null;
         } else {
             this.selectedLetter = letter;

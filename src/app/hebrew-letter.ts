@@ -1,5 +1,5 @@
-const HEBREW_LETTERS = "אבגדהוזחטיכךלמםנןסעפףצץקרשתװױײ".split("");
-const NON_FINAL_HEBREW_LETTERS = "אבגדהוזחטיכלמנסעפצקרשת".split("");
+const HEBREW_LETTERS = 'אבגדהוזחטיכךלמםנןסעפףצץקרשתװױײ'.split('');
+const NON_FINAL_HEBREW_LETTERS = 'אבגדהוזחטיכלמנסעפצקרשת'.split('');
 
 export class Niqqud {
     readonly representation: string; // the actual unicode representation of the niqqud
@@ -86,12 +86,12 @@ export class LetterInstance {
     }
 
     hasNiqqud(niqqud: Niqqud): boolean {
-        return this._niqqudByGroups.get(niqqud.group) == niqqud;
+        return this._niqqudByGroups.get(niqqud.group) === niqqud;
     }
 
     private validateNiqqudBeforeAdding(niqqud: Niqqud) {
         if (!niqqud) {
-            throw new Error("null niqqud");
+            throw new Error('null niqqud');
         }
 
         if (!niqqud.isApplicableToLetter(this._consonant)) {
@@ -101,42 +101,42 @@ export class LetterInstance {
 }
 
 export const ALL_NIQQUD = [
-    new Niqqud("\u05B0", 0, NON_FINAL_HEBREW_LETTERS.concat(['ך'])), // sheva
+    new Niqqud('\u05B0', 0, NON_FINAL_HEBREW_LETTERS.concat(['ך'])), // sheva
 
     // a
-    new Niqqud("\u05B2", 0), // hataf patah
-    new Niqqud("\u05B7", 0, NON_FINAL_HEBREW_LETTERS.concat(['ײ'])), // patah
-    new Niqqud("\u05B8", 0, NON_FINAL_HEBREW_LETTERS.concat(['ך'])), // qamats
+    new Niqqud('\u05B2', 0), // hataf patah
+    new Niqqud('\u05B7', 0, NON_FINAL_HEBREW_LETTERS.concat(['ײ'])), // patah
+    new Niqqud('\u05B8', 0, NON_FINAL_HEBREW_LETTERS.concat(['ך'])), // qamats
 
     // e
-    new Niqqud("\u05B1", 0), // hataf segol
-    new Niqqud("\u05B6", 0), // segol
-    new Niqqud("\u05B5", 0), // tsere
+    new Niqqud('\u05B1', 0), // hataf segol
+    new Niqqud('\u05B6', 0), // segol
+    new Niqqud('\u05B5', 0), // tsere
 
     // i
-    new Niqqud("\u05B4", 0), // hiriq
+    new Niqqud('\u05B4', 0), // hiriq
 
     // o
-    new Niqqud("\u05B3", 0), // hataf qamats
-    new Niqqud("\u05B9", 0), // holam (or holam male on vav)
+    new Niqqud('\u05B3', 0), // hataf qamats
+    new Niqqud('\u05B9', 0), // holam (or holam male on vav)
     // note: there seems to be no way to write vav with holam haser without it breaking on at least some systems
     // so i chose to follow the iphone hebrew keyboard's lead and use the holam haser for vav unicode character
     // luckily, most culmus fonts seems to work with it
-    new Niqqud("\u05BA", 0, ["ו"]), // holam haser for vav
+    new Niqqud('\u05BA', 0, ['ו']), // holam haser for vav
 
     // new Niqqud("\u05C2", true, ["ו"]), // holam haser for vav (sin dot)
     // new Niqqud("\u200C\u05BA", true, ["ו"]), // holam haser for vav (w/zero-width non-joiner)
 
     // u
-    new Niqqud("\u05BB", 0), // qubuts
+    new Niqqud('\u05BB', 0), // qubuts
 
     // shin/sin
-    new Niqqud("\u05C1", 1, ["ש"]), // shin (right) dot
-    new Niqqud("\u05C2", 1, ["ש"]), // sin (left) dot
+    new Niqqud('\u05C1', 1, ['ש']), // shin (right) dot
+    new Niqqud('\u05C2', 1, ['ש']), // sin (left) dot
 
     // dagesh/rafe
-    new Niqqud("\u05BC", 2, NON_FINAL_HEBREW_LETTERS.concat(['ך', 'ף'])), // dagesh or mapiq
-    new Niqqud("\u05BF", 2, "בכפ".split("")) // rafe
+    new Niqqud('\u05BC', 2, NON_FINAL_HEBREW_LETTERS.concat(['ך', 'ף'])), // dagesh or mapiq
+    new Niqqud('\u05BF', 2, 'בכפ'.split('')) // rafe
 ];
 
 export const NIQQUD_GROUPS = ALL_NIQQUD.reduce(
@@ -147,23 +147,23 @@ export const NIQQUD_GROUPS = ALL_NIQQUD.reduce(
 export const NIQQUD_BY_GROUPS = NIQQUD_GROUPS.map((group) => ALL_NIQQUD.filter((n) => n.group === group));
 
 const PRE_BAKED_NIQQUD = (function() {
-    const dageshPreBaked = "אּבּגּדּהּוּזּטּיּךּכּלּמּנּסּףּפּצּקּרּשּתּ".split("");
+    const dageshPreBaked = 'אּבּגּדּהּוּזּטּיּךּכּלּמּנּסּףּפּצּקּרּשּתּ'.split('');
     const dageshDifference = 0xFB30 - 0x05D0; // difference between aleft with mapiq and regular alef
 
-    return dageshPreBaked.map((c) => [c, String.fromCharCode(c.charCodeAt(0) - dageshDifference) + "\u05BC"]);
+    return dageshPreBaked.map((c) => [c, String.fromCharCode(c.charCodeAt(0) - dageshDifference) + '\u05BC']);
 })().concat([
-    ["יִ", "י" + "\u05B4"], // yod with hiriq
-    ["שׁ", "ש" + "\u05C1"], // shin with shin dot
-    ["שׂ", "ש" + "\u05C2"], // shin with sin dot
-    ["שּׁ", "ש" + "\u05C1\u05BC"], // shin with dagesh and shin dot
-    ["שּׂ", "ש" + "\u05C2\u05BC"], // shin with dagesh and sin dot
-    ["אַ", "א" + "\u05B7"], // alef with patah
-    ["אָ", "א" + "\u05B8"], // alef with qamats
-    ["וֹ", "ו" + "\u05B9"], // vav with holam (male)
-    ["בֿ", "ב" + "\u05BF"], // bet with rafe
-    ["כֿ", "כ" + "\u05BF"], // kaf with rafe
-    ["פֿ", "פ" + "\u05BF"], // pe with rafe
-    ["ײַ", "ײ" + "\u05B7"] // yod yod with patah
+    ['יִ', 'י' + '\u05B4'], // yod with hiriq
+    ['שׁ', 'ש' + '\u05C1'], // shin with shin dot
+    ['שׂ', 'ש' + '\u05C2'], // shin with sin dot
+    ['שּׁ', 'ש' + '\u05C1\u05BC'], // shin with dagesh and shin dot
+    ['שּׂ', 'ש' + '\u05C2\u05BC'], // shin with dagesh and sin dot
+    ['אַ', 'א' + '\u05B7'], // alef with patah
+    ['אָ', 'א' + '\u05B8'], // alef with qamats
+    ['וֹ', 'ו' + '\u05B9'], // vav with holam (male)
+    ['בֿ', 'ב' + '\u05BF'], // bet with rafe
+    ['כֿ', 'כ' + '\u05BF'], // kaf with rafe
+    ['פֿ', 'פ' + '\u05BF'], // pe with rafe
+    ['ײַ', 'ײ' + '\u05B7'] // yod yod with patah
 ]);
 
 function findNiqqud(niqqudString: string, letterString: string): Niqqud {
@@ -172,7 +172,7 @@ function findNiqqud(niqqudString: string, letterString: string): Niqqud {
     let thereWereInvalids = false;
 
     for (let niqqud of ALL_NIQQUD) {
-        if (niqqud.representation == niqqudString) {
+        if (niqqud.representation === niqqudString) {
             if (!letterString || niqqud.isApplicableToLetter(letterString)) {
                 return niqqud;
             } else {
@@ -186,7 +186,7 @@ function findNiqqud(niqqudString: string, letterString: string): Niqqud {
 
 export function parseHebrewText(text: string): LetterInstance[] {
     // replace all pre-baked letters with their letter + niqqud
-    for(let [prebaked, postbaked] of PRE_BAKED_NIQQUD) {
+    for (let [prebaked, postbaked] of PRE_BAKED_NIQQUD) {
         text = text.replace(prebaked, postbaked);
     }
 
@@ -214,14 +214,14 @@ export function parseHebrewText(text: string): LetterInstance[] {
 
             // add it as a standalone square
             currentLetter = null;
-            result.push(new LetterInstance("", [findNiqqud(c, null)]));
+            result.push(new LetterInstance('', [findNiqqud(c, null)]));
         } else {
             // found applicable niqqud!
 
             if (currentLetter) {
                 currentLetter.addNiqqud(foundNiqqud);
             } else {
-                result.push(new LetterInstance("", [foundNiqqud]));
+                result.push(new LetterInstance('', [foundNiqqud]));
             }
         }
     }

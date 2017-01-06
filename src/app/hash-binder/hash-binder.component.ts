@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Output, OnDestroy} from '@angular/core';
-import {environment} from "../../environments/environment";
+import {environment} from '../../environments/environment';
 
 @Component({
     selector: 'hash-binder',
@@ -23,19 +23,19 @@ export class HashBinderComponent implements OnDestroy {
                 }
             };
 
-            window.addEventListener("hashchange", this.listener);
+            window.addEventListener('hashchange', this.listener);
         }
     }
 
     setValue(value: string) {
         if (environment.location_hash_support) {
-            window.location.hash = this.lastRecordedValue = '#' + (value || "");
+            window.location.hash = this.lastRecordedValue = '#' + (value || '');
         }
     }
 
     ngOnDestroy(): void {
         if (environment.location_hash_support) {
-            window.removeEventListener("hashchange", this.listener);
+            window.removeEventListener('hashchange', this.listener);
         }
     }
 

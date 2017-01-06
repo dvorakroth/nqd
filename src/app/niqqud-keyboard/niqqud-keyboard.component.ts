@@ -1,5 +1,5 @@
 import {Component, Input, OnChanges, SimpleChanges} from '@angular/core';
-import {LetterInstance, Niqqud, NIQQUD_BY_GROUPS} from "../hebrew-letter";
+import {LetterInstance, Niqqud, NIQQUD_BY_GROUPS} from '../hebrew-letter';
 
 @Component({
     selector: 'niqqud-keyboard',
@@ -16,7 +16,7 @@ export class NiqqudKeyboardComponent implements OnChanges {
     }
 
     ngOnChanges(changes: SimpleChanges): void {
-        if (changes["selectedLetter"]) {
+        if (changes['selectedLetter']) {
             this.regenerateAvailableNiqqud();
         }
     }

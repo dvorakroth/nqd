@@ -6,7 +6,7 @@ import {HttpModule} from '@angular/http';
 import {AppComponent} from './app.component';
 import {NiqqudKeyboardComponent} from './niqqud-keyboard/niqqud-keyboard.component';
 import { HashBinderComponent } from './hash-binder/hash-binder.component';
-import { HashBinderValueAccessor } from './hash-binder/hash-binder-value-accessor.directive';
+import { HashBinderValueAccessorDirective } from './hash-binder/hash-binder-value-accessor.directive';
 
 
 @NgModule({
@@ -14,7 +14,7 @@ import { HashBinderValueAccessor } from './hash-binder/hash-binder-value-accesso
         AppComponent,
         NiqqudKeyboardComponent,
         HashBinderComponent,
-        HashBinderValueAccessor
+        HashBinderValueAccessorDirective
     ],
     imports: [
         BrowserModule,
