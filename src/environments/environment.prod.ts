@@ -1,3 +1,4 @@
 export const environment = {
-  production: true
+    production: true,
+    location_hash_support: false
 };

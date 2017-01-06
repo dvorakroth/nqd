@@ -1,5 +1,6 @@
 import {Component} from '@angular/core';
 import {LetterInstance, parseHebrewText} from "./hebrew-letter";
+import {environment} from "../environments/environment";
 
 @Component({
     selector: 'app-root',
@@ -10,7 +11,9 @@ export class AppComponent {
     selectedLetter: LetterInstance;
 
     constructor() {
-        this.fullText = window.location.hash.slice(1);
+        if (environment.location_hash_support) {
+            this.fullText = window.location.hash.slice(1);
+        }
     }
 
     get fullText() {

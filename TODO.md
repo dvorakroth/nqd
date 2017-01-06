@@ -29,3 +29,5 @@
 * ~~vav with holam haser looks like two squares -- try the sin-dot method?~~ be sure to try on other computers
 * ~~need to not be able to select both shindot and sindot -- maybe divide auxiliary into "groups" and only allow one of each group?~~
 * ~~vertically center the letters in the boxes~~
+
+* mobile safari hebrew chars in location.hash are urlencoded
