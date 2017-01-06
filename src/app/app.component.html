@@ -1,7 +1,8 @@
 <hash-binder [(ngModel)]="fullText"></hash-binder>
 
 <div id="initial-input">
-    <input [(ngModel)]="fullText">
+    <input [(ngModel)]="fullText"
+           placeholder="(טקסט לניקוד)">
 </div>
 
 <ul *ngIf="letters && letters.length" class="hebrew-text">
