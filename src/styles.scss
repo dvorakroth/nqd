@@ -36,6 +36,9 @@ $box-bg-color: $beige;
 $sel-bg-color: $brown;
 $hov-bg-color: $sand;
 
+$link-color: $darker-brown;
+$link-hover-color: $brown;
+
 /* omitted: $size-xs-min-width: 0px; */
 $size-sm-min-width: 568px;
 $size-md-min-width: 768px;
@@ -90,6 +93,17 @@ body {
     }
 }
 
+a:link, a:visited {
+    color: $link-color;
+    text-decoration: none;
+    border-bottom: 2px solid $link-color;
+}
+
+a:hover, a:active {
+    color: $link-hover-color;
+    border-bottom-color: $link-hover-color;
+}
+
 #main-content {
     position: relative;
     width: 100%;
@@ -137,7 +151,7 @@ body {
         bottom: 1em;
     }
 
-    ::before {
+    &::before {
         @include flourish(url(assets/flourish-1.svg));
     }
 
