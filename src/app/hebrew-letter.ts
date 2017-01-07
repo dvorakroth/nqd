@@ -21,85 +21,6 @@ export class Niqqud {
     }
 }
 
-export class LetterInstance {
-    private _consonant: string;
-    private _niqqudByGroups: Map<number, Niqqud> = new Map<number, Niqqud>();
-
-    constructor(consonant: string, allNiqqud: Niqqud[] = []) {
-        this.consonant = consonant;
-
-        for (let niqqud of allNiqqud) {
-            this._niqqudByGroups.set(niqqud.group, niqqud);
-        }
-    }
-
-    get consonant() {
-        return this._consonant;
-    }
-
-    set consonant(consonant: string) {
-        // if (!consonant || HEBREW_LETTERS.indexOf(consonant) < 0) {
-        //     throw new Error(`Invalid letter ${consonant}`);
-        // }
-
-        // remove all niqqud that can't be applied to this consonant
-        this._niqqudByGroups.forEach((niqqud, group) => {
-            if (!niqqud.isApplicableToLetter(consonant)) {
-                this._niqqudByGroups.delete(group);
-            }
-        });
-
-        this._consonant = consonant;
-    }
-
-    get representation() {
-        let result = this._consonant;
-
-        for (let group of NIQQUD_GROUPS) {
-            if (this._niqqudByGroups.has(group)) {
-                result += this._niqqudByGroups.get(group).representation;
-            }
-        }
-
-        return result;
-    }
-
-    addNiqqud(niqqud: Niqqud) {
-        this.validateNiqqudBeforeAdding(niqqud);
-
-        this._niqqudByGroups.set(niqqud.group, niqqud);
-    }
-
-    removeNiqqud(niqqud: Niqqud): boolean {
-        if (this.hasNiqqud(niqqud)) {
-            this._niqqudByGroups.delete(niqqud.group);
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    toggleNiqqud(niqqud: Niqqud) {
-        if (!this.removeNiqqud(niqqud)) {
-            this.addNiqqud(niqqud);
-        }
-    }
-
-    hasNiqqud(niqqud: Niqqud): boolean {
-        return this._niqqudByGroups.get(niqqud.group) === niqqud;
-    }
-
-    private validateNiqqudBeforeAdding(niqqud: Niqqud) {
-        if (!niqqud) {
-            throw new Error('null niqqud');
-        }
-
-        if (!niqqud.isApplicableToLetter(this._consonant)) {
-            throw new Error(`Niqqud ${niqqud} not applicable to letter ${this._consonant}`);
-        }
-    }
-}
-
 export const ALL_NIQQUD = [
     new Niqqud('\u05B0', 0, NON_FINAL_HEBREW_LETTERS.concat(['ך'])), // sheva
 
@@ -166,7 +87,97 @@ const PRE_BAKED_NIQQUD = (function() {
     ['ײַ', 'ײ' + '\u05B7'] // yod yod with patah
 ]);
 
-function findNiqqud(niqqudString: string, letterString: string): Niqqud {
+export class LetterInstance {
+    private _consonant: string;
+    private _niqqudByGroups: Map<number, Niqqud> = new Map<number, Niqqud>();
+    private _applicableNiqqudByGroups: Niqqud[][] = [];
+
+    constructor(consonant: string, allNiqqud: Niqqud[] = []) {
+        this.consonant = consonant;
+
+        for (let niqqud of allNiqqud) {
+            this.addNiqqud(niqqud);
+        }
+    }
+
+    get consonant() {
+        return this._consonant;
+    }
+
+    set consonant(consonant: string) {
+        // remove all niqqud that can't be applied to this consonant
+        this._niqqudByGroups.forEach((niqqud, group) => {
+            if (!niqqud.isApplicableToLetter(consonant)) {
+                this._niqqudByGroups.delete(group);
+            }
+        });
+
+        this._consonant = consonant;
+
+        this.regenerateAvailableNiqqud();
+    }
+
+    get representation() {
+        let result = this._consonant;
+
+        for (let group of NIQQUD_GROUPS) {
+            if (this._niqqudByGroups.has(group)) {
+                result += this._niqqudByGroups.get(group).representation;
+            }
+        }
+
+        return result;
+    }
+
+    get applicableNiqqudByGroups() {
+        return this._applicableNiqqudByGroups;
+    }
+
+    addNiqqud(niqqud: Niqqud) {
+        this.validateNiqqudBeforeAdding(niqqud);
+
+        this._niqqudByGroups.set(niqqud.group, niqqud);
+    }
+
+    removeNiqqud(niqqud: Niqqud): boolean {
+        if (this.hasNiqqud(niqqud)) {
+            this._niqqudByGroups.delete(niqqud.group);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    toggleNiqqud(niqqud: Niqqud) {
+        if (!this.removeNiqqud(niqqud)) {
+            this.addNiqqud(niqqud);
+        }
+    }
+
+    hasNiqqud(niqqud: Niqqud): boolean {
+        return this._niqqudByGroups.get(niqqud.group) === niqqud;
+    }
+
+    private validateNiqqudBeforeAdding(niqqud: Niqqud) {
+        if (!niqqud) {
+            throw new Error('null niqqud');
+        }
+
+        if (!niqqud.isApplicableToLetter(this._consonant)) {
+            throw new Error(`Niqqud ${niqqud} not applicable to letter ${this._consonant}`);
+        }
+    }
+
+    private regenerateAvailableNiqqud() {
+        const onlyApplicable = (v) => v.isApplicableToLetter(this.consonant);
+
+        this._applicableNiqqudByGroups = NIQQUD_BY_GROUPS
+            .map((x) => x.filter(onlyApplicable))
+            .filter((g) => g.length);
+    }
+}
+
+function parseNiqqud(niqqudString: string, letterString: string): Niqqud {
     // returns undefined when not found; null when found but invalid for this letter
 
     let thereWereInvalids = false;
@@ -203,7 +214,7 @@ export function parseHebrewText(text: string): LetterInstance[] {
         }
 
         // check if the character is a niqqud
-        const foundNiqqud = findNiqqud(c, currentLetter ? currentLetter.consonant : null);
+        const foundNiqqud = parseNiqqud(c, currentLetter ? currentLetter.consonant : null);
 
         if (typeof(foundNiqqud) === 'undefined') {
             // no niqqud was found -- this is probably a non-Hebrew character
@@ -214,7 +225,7 @@ export function parseHebrewText(text: string): LetterInstance[] {
 
             // add it as a standalone square
             currentLetter = null;
-            result.push(new LetterInstance('', [findNiqqud(c, null)]));
+            result.push(new LetterInstance('', [parseNiqqud(c, null)]));
         } else {
             // found applicable niqqud!
 

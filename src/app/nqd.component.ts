@@ -27,6 +27,10 @@ export class NqdComponent {
     }
 
     letterClicked(letter: LetterInstance) {
+        if (!letter.applicableNiqqudByGroups || !letter.applicableNiqqudByGroups.length) {
+            return;
+        }
+
         if (this.selectedLetter === letter) {
             this.selectedLetter = null;
         } else {

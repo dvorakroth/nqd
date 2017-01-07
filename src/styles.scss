@@ -35,6 +35,7 @@ $box-border-color: $darker-brown;
 $box-bg-color: $beige;
 $sel-bg-color: $brown;
 $hov-bg-color: $sand;
+$disabled-bg-color: darken($content-bg-color, 10%);
 
 $link-color: $darker-brown;
 $link-hover-color: $brown;
@@ -164,8 +165,8 @@ a:hover, a:active {
 #logo {
     @mixin logo-flourish {
         display: inline-block;
-        width: .44444444em;
-        height: 1.25em;
+        width: .43em;
+        height: 1.12em;
 
         position: absolute;
 
@@ -198,7 +199,11 @@ a:hover, a:active {
         -o-transform: scaleX(-1); /* Opera */
         -webkit-transform: scaleX(-1); /* Webkit */
         transform: scaleX(-1); /* Standard */
-        filter: FlipH; /* IE 6/7/8 */
+
+        @media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
+            /* IE10+ only */
+            padding-right: .875em;
+        }
     }
 }
 
@@ -244,6 +249,10 @@ ul.hebrew-text {
 .hebrew-text {
     padding: 0;
     margin: 0 0 1em 0;
+
+    &.has-flourish-above::before {
+        @include flourish(url(assets/flourish-3.svg));
+    }
 }
 
 .hebrew-text-letterblock {
@@ -276,19 +285,22 @@ ul.hebrew-text {
     @media screen and (min-width: $size-sm-min-width) {
         font-size: 1em;
     }
-}
 
-.hebrew-text-letterblock.is-selected {
-    background-color: $sel-bg-color;
-    color: #fff;
-}
+    &.is-selected {
+        background-color: $sel-bg-color;
+        color: #fff;
+    }
 
-.hebrew-text-letterblock:hover:not(.is-selected) {
-    background-color: $hov-bg-color;
-}
+    &:hover:not(.is-selected):not(.is-disabled) {
+        background-color: $hov-bg-color;
+    }
 
-.hebrew-text.has-flourish-above::before {
-    @include flourish(url(assets/flourish-3.svg));
+    &.is-disabled {
+        background-color: $disabled-bg-color;
+        border-color: $disabled-bg-color;
+
+        cursor: default;
+    }
 }
 
 .spinner {

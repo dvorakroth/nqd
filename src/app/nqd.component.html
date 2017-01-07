@@ -8,6 +8,7 @@
 <ul *ngIf="letters && letters.length" class="hebrew-text">
     <li class="hebrew-text-letterblock" *ngFor="let letter of letters"
         [class.is-selected]="selectedLetter == letter"
+        [class.is-disabled]="!letter.applicableNiqqudByGroups || !letter.applicableNiqqudByGroups.length"
         (click)="letterClicked(letter)">
         {{letter.representation}}
     </li>

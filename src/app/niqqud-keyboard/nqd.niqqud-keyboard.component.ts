@@ -17,13 +17,7 @@ export class NqdNiqqudKeyboardComponent implements OnChanges {
 
     ngOnChanges(changes: SimpleChanges): void {
         if (changes['selectedLetter']) {
-            this.regenerateAvailableNiqqud();
+            this.allNiqqudByGroups = this.selectedLetter.applicableNiqqudByGroups;
         }
-    }
-
-    private regenerateAvailableNiqqud() {
-        const filter = (v) => v.isApplicableToLetter(this.selectedLetter.consonant);
-
-        this.allNiqqudByGroups = NIQQUD_BY_GROUPS.map((x) => x.filter(filter)).filter((g) => g.length);
     }
 }
