@@ -51,13 +51,14 @@ export const ALL_NIQQUD = [
     // u
     new Niqqud('\u05BB', 0), // qubuts
 
-    // shin/sin
-    new Niqqud('\u05C1', 1, ['ש']), // shin (right) dot
-    new Niqqud('\u05C2', 1, ['ש']), // sin (left) dot
-
     // dagesh/rafe
-    new Niqqud('\u05BC', 2, NON_FINAL_HEBREW_LETTERS.concat(['ך', 'ף'])), // dagesh or mapiq
-    new Niqqud('\u05BF', 2, 'בכפ'.split('')) // rafe
+    new Niqqud('\u05BC', 1, NON_FINAL_HEBREW_LETTERS.concat(['ך', 'ף'])), // dagesh or mapiq
+    new Niqqud('\u05BF', 1, 'בכפ'.split('')), // rafe
+
+
+    // shin/sin
+    new Niqqud('\u05C1', 2, ['ש']), // shin (right) dot
+    new Niqqud('\u05C2', 2, ['ש']) // sin (left) dot
 ];
 
 export const NIQQUD_GROUPS = ALL_NIQQUD.reduce(
@@ -69,7 +70,7 @@ export const NIQQUD_BY_GROUPS = NIQQUD_GROUPS.map((group) => ALL_NIQQUD.filter((
 
 const PRE_BAKED_NIQQUD = (function() {
     const dageshPreBaked = 'אּבּגּדּהּוּזּטּיּךּכּלּמּנּסּףּפּצּקּרּשּתּ'.split('');
-    const dageshDifference = 0xFB30 - 0x05D0; // difference between aleft with mapiq and regular alef
+    const dageshDifference = 0xFB30 - 0x05D0; // difference between alef with mapiq and regular alef
 
     return dageshPreBaked.map((c) => [c, String.fromCharCode(c.charCodeAt(0) - dageshDifference) + '\u05BC']);
 })().concat([
