@@ -1,6 +1,6 @@
 {
     "name": "niqqudizator",
-    "version": "1.0.2",
+    "version": "1.0.4",
     "angular-cli": {},
     "scripts": {
         "ng": "ng",
