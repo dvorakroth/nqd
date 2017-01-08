@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, AfterViewInit} from '@angular/core';
 import {LetterInstance, parseHebrewText} from './hebrew-letter';
 import {environment} from '../environments/environment';
 
@@ -6,7 +6,7 @@ import {environment} from '../environments/environment';
     selector: 'nqd-root',
     templateUrl: './nqd.component.html'
 })
-export class NqdComponent {
+export class NqdComponent implements AfterViewInit {
     letters: LetterInstance[] = [];
     selectedLetter: LetterInstance;
 
@@ -36,5 +36,29 @@ export class NqdComponent {
         } else {
             this.selectedLetter = letter;
         }
+    }
+
+    ngAfterViewInit(): void {
+        let lastTouch: number;
+
+        // prevent double-tap zoom (in iOS 10 the meta tag doesn't suffice)
+        document.body.addEventListener('touchstart', function preventZoom(event) {
+            const t2 = event.timeStamp;
+            const t1 = lastTouch || t2;
+            const dt = t2 - t1;
+            const fingers = event.touches.length;
+            lastTouch = t2;
+            if (!dt || dt > 500 || fingers > 1) {
+                return; // not double-tap
+            }
+            event.preventDefault(); // double tap - prevent the zoom
+
+            // also synthesize click events we just swallowed up
+            const e = document.createEvent('MouseEvents');
+            e.initEvent('click', true, true);
+            e['synthetic'] = true;
+
+            event.target.dispatchEvent(e);
+        });
     }
 }

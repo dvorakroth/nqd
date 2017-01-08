@@ -61,10 +61,16 @@ export const ALL_NIQQUD = [
     new Niqqud('\u05C2', 2, ['ש']) // sin (left) dot
 ];
 
+// (by display order)
 export const NIQQUD_GROUPS = ALL_NIQQUD.reduce(
     (g, niqqud) => (g.indexOf(niqqud.group) < 0) ? g.concat([niqqud.group]) : g,
     []
 ).sort();
+
+const IMPORTANT_NIQQUD_GROUPS = [1]; // on iOS, at least, it's best to write these first
+const NIQQUD_GROUPS_BY_IMPORTANCE = IMPORTANT_NIQQUD_GROUPS.concat(
+    NIQQUD_GROUPS.filter((x) => IMPORTANT_NIQQUD_GROUPS.indexOf(x) < 0)
+);
 
 export const NIQQUD_BY_GROUPS = NIQQUD_GROUPS.map((group) => ALL_NIQQUD.filter((n) => n.group === group));
 
@@ -88,10 +94,11 @@ const PRE_BAKED_NIQQUD = (function() {
     ['ײַ', 'ײ' + '\u05B7'] // yod yod with patah
 ]);
 
+// represents a letter's "square" -- letter + up to one niqqud of each group
 export class LetterInstance {
     private _consonant: string;
-    private _niqqudByGroups: Map<number, Niqqud> = new Map<number, Niqqud>();
-    private _applicableNiqqudByGroups: Niqqud[][] = [];
+    private _niqqudByGroups: Map<number, Niqqud> = new Map<number, Niqqud>(); // niqqud on the letter
+    private _applicableNiqqudByGroups: Niqqud[][] = []; // niqqud that generally can be put on this letter
 
     constructor(consonant: string, allNiqqud: Niqqud[] = []) {
         this.consonant = consonant;
@@ -121,7 +128,7 @@ export class LetterInstance {
     get representation() {
         let result = this._consonant;
 
-        for (let group of NIQQUD_GROUPS) {
+        for (let group of NIQQUD_GROUPS_BY_IMPORTANCE) {
             if (this._niqqudByGroups.has(group)) {
                 result += this._niqqudByGroups.get(group).representation;
             }

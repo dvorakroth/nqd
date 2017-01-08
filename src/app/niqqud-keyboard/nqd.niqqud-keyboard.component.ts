@@ -11,8 +11,8 @@ export class NqdNiqqudKeyboardComponent implements OnChanges {
 
     allNiqqudByGroups: Niqqud[][];
 
-    letterWithNiqqud(niqqud: Niqqud): LetterInstance {
-        return new LetterInstance(this.selectedLetter.consonant, [niqqud]);
+    letterWithNiqqud(niqqud: Niqqud): string {
+        return this.selectedLetter.consonant + niqqud.representation;
     }
 
     ngOnChanges(changes: SimpleChanges): void {
