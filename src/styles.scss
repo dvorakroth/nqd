@@ -233,7 +233,9 @@ a:hover, a:active {
     border: 1px solid #ccc;
     box-shadow: inset 0 1px 3px #ddd;
     border-radius: 4px;
-    box-sizing: border-box;
+
+    line-height: 1.15;
+    min-height: 1.8em;
 
     background-color: #fff;
 
@@ -265,6 +267,8 @@ a:hover, a:active {
 
     width: 100%;
     display: none;
+
+    line-height: 1.15;
 
     font-size: 1.25em;
     color: rgba(0, 0, 0, 0.4);
