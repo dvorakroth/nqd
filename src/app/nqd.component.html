@@ -1,12 +1,12 @@
 <nqd-hash-binder [(ngModel)]="fullText"></nqd-hash-binder>
 
-<div>
-    <form onsubmit="document.getElementById('initial-input').blur()">
-        <input id="initial-input"
-               [(ngModel)]="fullText"
-               [ngModelOptions]="{standalone: true}"
-               placeholder="(טקסט לניקוד)">
-    </form>
+<div id="input-container">
+    <div id="initial-input"
+         contenteditable="true"
+         [(contenteditableModel)]="fullText"
+         placeholder="(טקסט לניקוד)">
+    </div>
+    <div id="initial-input-placeholder">(טקסט לניקוד)</div>
 </div>
 
 <ul *ngIf="letters && letters.length" class="hebrew-text">

@@ -19,7 +19,7 @@ export class NqdHashBinderComponent implements OnDestroy {
             this.listener = () => {
                 const hash = window.location.hash;
                 if ((hash || '#') !== this.lastRecordedValue) {
-                    this.hashChange.emit(window.location.hash.slice(1));
+                    this.hashChange.emit(decodeURIComponent(window.location.hash.slice(1)));
                 }
             };
 
@@ -29,7 +29,7 @@ export class NqdHashBinderComponent implements OnDestroy {
 
     setValue(value: string) {
         if (environment.location_hash_support) {
-            window.location.hash = this.lastRecordedValue = '#' + (value || '');
+            window.location.hash = this.lastRecordedValue = '#' + encodeURIComponent(value || '');
         }
     }
 

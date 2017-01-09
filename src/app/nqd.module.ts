@@ -7,6 +7,7 @@ import {NqdComponent} from './nqd.component';
 import {NqdNiqqudKeyboardComponent} from './niqqud-keyboard/nqd.niqqud-keyboard.component';
 import { NqdHashBinderComponent } from './hash-binder/nqd.hash-binder.component';
 import { NqdHashBinderValueAccessorDirective } from './hash-binder/nqd.hash-binder-value-accessor.directive';
+import {ContenteditableModelDirective} from "./contenteditable-model.directive";
 
 
 @NgModule({
@@ -14,7 +15,8 @@ import { NqdHashBinderValueAccessorDirective } from './hash-binder/nqd.hash-bind
         NqdComponent,
         NqdNiqqudKeyboardComponent,
         NqdHashBinderComponent,
-        NqdHashBinderValueAccessorDirective
+        NqdHashBinderValueAccessorDirective,
+        ContenteditableModelDirective
     ],
     imports: [
         BrowserModule,

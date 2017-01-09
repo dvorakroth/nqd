@@ -12,7 +12,7 @@ export class NqdComponent implements AfterViewInit {
 
     constructor() {
         if (environment.location_hash_support) {
-            this.fullText = window.location.hash.slice(1);
+            this.fullText = decodeURIComponent(window.location.hash.slice(1));
         }
     }
 
@@ -22,6 +22,15 @@ export class NqdComponent implements AfterViewInit {
 
     set fullText(fullText: string) {
         this.selectedLetter = null;
+
+        // if the user types in multiline text, then selects-all and deletes it, the browser seems to thinks
+        // that the text in the input box is a single newline and nothing else (and if the user only typed a
+        // newline, it seems the text gets set to '\n\n' but that's not as bad)
+
+        // there's a related workaround in the contenteditable-model.directive.ts
+        if (fullText == '\n') {
+            fullText = '';
+        }
 
         this.letters = !fullText ? [] : parseHebrewText(fullText);
     }

@@ -219,6 +219,10 @@ a:hover, a:active {
     padding-bottom: 2em;
 }
 
+#input-container {
+    position: relative;
+}
+
 #initial-input {
     padding: .3em .4em;
     display: block;
@@ -231,11 +235,41 @@ a:hover, a:active {
     border-radius: 4px;
     box-sizing: border-box;
 
+    background-color: #fff;
+
     vertical-align: middle;
 
     font-family: $font-stack;
     font-size: 1.25em;
     text-align: center;
+
+    @media screen and (min-width: $size-sm-min-width) {
+        font-size: 1em;
+    }
+
+    /* poor man's placeholder text (because it's not an input, but a div[contenteditable=true] */
+    &:empty ~ #initial-input-placeholder {
+        display: block;
+    }
+}
+
+#initial-input-placeholder {
+    /* did you know? when doing this by "&:empty::before", safari on mac and ios has a silly bug where
+       the caret appears on the side of the fake input box, so that's why i'm doing it this way */
+    padding: .3em .4em;
+    border: 1px solid rgba(0, 0, 0, 0);
+
+    position: absolute;
+    left: 0;
+    top: 0;
+
+    width: 100%;
+    display: none;
+
+    font-size: 1.25em;
+    color: rgba(0, 0, 0, 0.4);
+
+    pointer-events: none;
 
     @media screen and (min-width: $size-sm-min-width) {
         font-size: 1em;
