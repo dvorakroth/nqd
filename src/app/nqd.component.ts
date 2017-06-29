@@ -10,6 +10,11 @@ export class NqdComponent implements AfterViewInit {
     letters: LetterInstance[] = [];
     selectedLetter: LetterInstance;
 
+    // for the click hint:
+    didEverTypeClickableLetter = false;
+    didEverClick = false;
+    showClickHint = false;
+
     constructor() {
         if (environment.location_hash_support) {
             this.fullText = decodeURIComponent(window.location.hash.slice(1));
@@ -33,6 +38,37 @@ export class NqdComponent implements AfterViewInit {
         }
 
         this.letters = !fullText ? [] : parseHebrewText(fullText);
+
+        if (!this.didEverTypeClickableLetter) this.maybeStartHintTimer();
+    }
+
+    maybeStartHintTimer() {
+        // when the user types a clickable letter for the first time, start the click hint timer
+        if (!this.didEverTypeClickableLetter && this.fullText && this.letters.length) {
+            // check if any of the characters are actually clickable
+            var clickableLetters = false;
+
+            for (const letter of this.letters) {
+                if (letter.applicableNiqqudByGroups && letter.applicableNiqqudByGroups.length) {
+                    clickableLetters = true;
+                }
+            }
+
+            // if nothing is clickable don't show a hint yet
+            if (!clickableLetters) return;
+            else this.didEverTypeClickableLetter = true;
+
+            // acutal timer-setting logic
+            setTimeout(
+                () => {
+                    if (!this.didEverClick) {
+                        // if the user *still* never clicked, show the hint
+                        this.showClickHint = true;
+                    }
+                },
+                5000 // i think five seconds is enough?
+            );
+        }
     }
 
     letterClicked(letter: LetterInstance) {
@@ -45,6 +81,8 @@ export class NqdComponent implements AfterViewInit {
         } else {
             this.selectedLetter = letter;
         }
+
+        if (!this.didEverClick) this.didEverClick = true;
     }
 
     ngAfterViewInit(): void {

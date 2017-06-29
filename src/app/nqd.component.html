@@ -4,9 +4,14 @@
     <div id="initial-input"
          contenteditable="true"
          [(contenteditableModel)]="fullText"
-         placeholder="(טקסט לניקוד)">
+         placeholder="(יֵשׁ לְהַקְלִיד כָּאן)">
     </div>
-    <div id="initial-input-placeholder">(טקסט לניקוד)</div>
+    <div id="initial-input-placeholder">(יֵשׁ לְהַקְלִיד כָּאן)</div>
+
+    <div id="click-hint"
+          [class.is-shown]="showClickHint">
+          <span id="click-hint-text">יֵשׁ לִלְחֹץ עַל הָרִבּוּעִים:</span>
+    </div>
 </div>
 
 <ul *ngIf="letters && letters.length" class="hebrew-text">
