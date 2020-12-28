@@ -1,5 +1,8 @@
 
 import './styles.scss';
+import './favicon.png';
+import './app-icon-apple.png';
+import './app-icon-square.png';
 
 import { LetterInstance, parseHebrewText, Niqqud } from "./hebrew-letter";
 import { NiqqudKeyboard } from "./niqqud-keyboard";
