@@ -100,8 +100,14 @@ export class LetterInstance {
     private _niqqudByGroups: Map<number, Niqqud> = new Map<number, Niqqud>(); // niqqud on the letter
     private _applicableNiqqudByGroups: Niqqud[][] = []; // niqqud that generally can be put on this letter
 
-    constructor(consonant: string, allNiqqud: Niqqud[] = []) {
-        this.consonant = consonant;
+    constructor(consonant: string | LetterInstance, allNiqqud: Niqqud[] = []) {
+        if (typeof consonant === 'string') {
+            this.consonant = consonant;
+        } else {
+            this.consonant = consonant.consonant;
+            this._niqqudByGroups = new Map(consonant._niqqudByGroups.entries());
+            this._applicableNiqqudByGroups = consonant._applicableNiqqudByGroups.map((a)=>a.concat([]));
+        }
 
         for (let niqqud of allNiqqud) {
             this.addNiqqud(niqqud);
@@ -204,6 +210,10 @@ function parseNiqqud(niqqudString: string, letterString: string): Niqqud {
 }
 
 export function parseHebrewText(text: string): LetterInstance[] {
+    while (text.length && text[text.length - 1] === '\n') {
+        text = text.substr(0, text.length - 1);
+    }
+
     // replace all pre-baked letters with their letter + niqqud
     for (let [prebaked, postbaked] of PRE_BAKED_NIQQUD) {
         text = text.replace(prebaked, postbaked);
